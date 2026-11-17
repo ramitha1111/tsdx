@@ -1,3 +1,9 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 2 optimizations:
+# - [MEDIUM] Add concurrency group to "nodejs.yml"
+# - [LOW] Explicitly set fail-fast for large matrix job "build" (6 combinations)
+# Estimated savings: ~4 min/run
+#
 name: CI
 
 on:
@@ -7,6 +13,10 @@ on:
   pull_request:
     branches: [main, master]
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
